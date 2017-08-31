@@ -1,0 +1,36 @@
+sudo: required
+
+services:
+- docker
+
+env:
+  global:
+    - IMAGE_NAME=stelzer77/grafana-armhf
+
+language: bash
+
+before_install:
+##get latest docker-ce version
+- sudo apt-get update
+- sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+- docker --version
+
+# prepare qemu
+- docker run --rm --privileged multiarch/qemu-user-static:register --reset
+
+# build image: telegraf
+- docker build -t $IMAGE_NAME .
+
+# test image
+# TODO
+
+after_success:
+# push image if from master branch
+- if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u="$DOCKER_USER" -p="$DOCKER_PASS";
+    TAG=$(grep "ENV VERSION" Dockerfile | awk 'NF>1{print $NF}');
+    docker tag $IMAGE_NAME:latest $IMAGE_NAME:$TAG;
+    docker push $IMAGE_NAME:latest;
+    docker push $IMAGE_NAME:$TAG;
+  fi
+
