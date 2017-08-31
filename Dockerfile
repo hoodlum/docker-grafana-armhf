@@ -11,7 +11,7 @@ RUN set -xe \
     && apk add --no-cache --virtual .build-deps ca-certificates curl tar \
     && update-ca-certificates \
     && mkdir -p /usr/src \
-    && curl -sSL ${GRAFANA_URL} | tar xz -C /usr/src \
+    && curl -sSL ${GRAFANA_URL} | tar xz --strip 1 -C /usr/src \
     && apk del .build-deps \
     && rm -rf /var/cache/apk/*
 
