@@ -2,7 +2,7 @@ FROM hypriot/rpi-alpine as build-stage
 
 MAINTAINER Soeren Stelzer
 
-ENV VERSION 4.4.3
+ENV VERSION 4.5.2
 
 ENV GRAFANA_FILE grafana-${VERSION}.linux-armhf.tar.gz
 ENV GRAFANA_URL https://github.com/fg2it/grafana-on-raspberry/releases/download/v${VERSION}/${GRAFANA_FILE}
